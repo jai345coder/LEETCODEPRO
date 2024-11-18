@@ -1,0 +1,231 @@
+//*108. Convert Sorted Array to Binary Search Tree
+//Solved:Easy
+
+//*  Given an integer array nums where the elements are sorted in ascending order, convert it to a 
+// height-balanced
+//  binary search tree.
+
+// /**runtime : 0ms
+//  * memory : 42.5 MB
+//time: 0ms tine complexity: O(n)(100%)
+//CODE:
+//  Definition for a binary tree node.
+//  * public class TreeNode {
+//  *     int val;
+//  *     TreeNode left;
+//  *     TreeNode right;
+//  *     TreeNode() {}
+//  *     TreeNode(int val) { this.val = val; }
+//  *     TreeNode(int val, TreeNode left, TreeNode right) {
+//  *         this.val = val;
+//  *         this.left = left;
+//  *         this.right = right;
+//  *     }
+//  * }
+//  */
+class Solution {
+    /**
+     * Converts a sorted array to a height-balanced binary search tree.
+     * @param nums the sorted array to convert
+     * @return the root of the binary search tree
+     */
+    public TreeNode sortedArrayToBST(int[] nums) {
+    // Base case: if the array is empty, return null
+    if(nums.length == 0){
+        return  null;
+    }
+    
+    // Recursive case: find the middle element of the array and make it the root of the tree
+    TreeNode head = helper( nums,0,nums.length-1);
+    return head;
+       
+    }
+    
+    /**
+     * A helper function to create a subtree from the given array and range.
+     * @param num the array to create the subtree from
+     * @param low the low index of the range
+     * @param high the high index of the range
+     * @return the root of the subtree
+     */
+    public TreeNode helper(int[] num,int low,int high){
+        // Base case: if the range is invalid, return null
+        if(low > high){
+            return null;
+        }
+        // Find the middle element of the range and make it the root of the subtree
+        int mid = (low+high)/2;
+        TreeNode node = new TreeNode(num[mid]);
+        // Recursively create the left and right subtrees
+        node.left = helper(num,low,mid-1);
+        node.right = helper(num,mid+1,high);
+        return node;
+    }
+}
+
+
+// 118. Pascal's Triangle
+// Solved
+// Easy
+// Topics
+// Companies
+// Given an integer numRows, return the first numRows of Pascal's triangle.
+
+// In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+class Solution2 {
+    /**
+     * Generate the first numRows of Pascal's triangle.
+     * @param numRows the number of rows to generate
+     * @return a list of lists of integers representing Pascal's triangle
+     */
+    public List<List<Integer>> generate(int numRows) {
+       
+        List<List<Integer>> result = new ArrayList<>(); // result list to store the generated triangle
+        if(numRows == 0){
+            return result; // return empty list if numRows is 0
+        }
+        if(numRows == 1){
+            List<Integer> firstRow = new ArrayList<>(); // first row of the triangle
+            firstRow.add(1); // first element of the first row is 1
+            result.add(firstRow); // add the first row to the result list
+            return result; // return the result list
+        }
+        // generate the previous rows
+        result = generate(numRows -1); 
+        List<Integer> preRow = result.get(numRows - 2); // get the previous row
+        List<Integer> currentRow = new ArrayList<>(); // current row of the triangle
+        currentRow.add(1); // first element of the current row is 1
+
+        // calculate the elements of the current row
+        for(int i=1;i< numRows -1 ;i++){
+            currentRow.add(preRow.get(i-1) + preRow.get(i)); // each element is the sum of the two elements directly above it
+        }
+
+        currentRow.add(1); // last element of the current row is 1
+        result.add(currentRow); // add the current row to the result list
+
+        return result; // return the result list
+    } 
+}
+
+
+
+
+// Here is a succinct explanation of the class definition:
+
+// * **Class Solution**: This class contains a method to calculate the maximum possible profit from a given array of stock prices.
+// * **Method maxProfit**:
+// 	+ Calculates the maximum possible profit that can be achieved by buying and selling a stock once, given an array of stock prices.
+// 	+ Returns the maximum profit, or 0 if the input array has one or zero elements.
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length <= 1) {
+            return 0;
+        }
+
+        int minPrice = Integer.MAX_VALUE;  // Tracks the minimum price encountered so far
+        int maxProfit = 0;  // Tracks the maximum profit
+
+        for (int price : prices) {
+            // Update the minimum price if the current price is lower
+            minPrice = Math.min(minPrice, price);
+            
+            // Calculate the profit if selling at the current price
+            int profit = price - minPrice;
+            
+            // Update the maximum profit if the current profit is higher
+            maxProfit = Math.max(maxProfit, profit);
+        }
+
+        return maxProfit;
+    }
+}
+//*228. Summary Ranges
+// Easy
+// Topics
+// Companies
+//*You are given a sorted unique integer array nums.
+
+// A range [a,b] is the set of all integers from a to b (inclusive).
+
+// Return the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.
+
+// Each range [a,b] in the list should be output as:
+
+// "a->b" if a != b
+// "a" if a == b 
+class Solution3 {
+    public List<String> summaryRanges(int[] nums) {
+      ArrayList<String> al = new ArrayList<>();//created an arraylist
+      
+      for(int i=0; i<nums.length;i++){//trevese to find range
+        int start = nums[i];//intialise
+        while(i+1<nums.length && nums[i]+1 == nums[i+1])i++;//check if is in range or not
+
+        if(start != nums[i]){//check if range is in range has sinle number or range of numbers
+            al.add(""+start+"->"+nums[i]);//NO
+        }else{
+            al.add(""+start);//YES
+        }
+      }
+      return al; }
+}
+
+/* 599. Minimum Index Sum of Two Lists
+*Solved
+*Easy
+Topics
+Companies
+*Given two arrays of strings list1 and list2, find the common strings with the least index sum.
+
+*A common string is a string that appeared in both list1 and list2.
+
+*A common string with the least index sum is a common string such that if it appeared at list1[i] and list2[j] then i + j should be the minimum value among all the other common strings.
+
+*Return all the common strings with the least index sum. Return the answer in any order.*/
+
+class Solution4 {
+    /**
+     * Finds the common restaurants with the least index sum from two lists.
+     *
+     * @param list1 the first list of restaurant names
+     * @param list2 the second list of restaurant names
+     * @return an array of common restaurant names with the least index sum
+     */
+    public String[] findRestaurant(String[] list1, String[] list2) {
+        // If list1 is longer than list2, swap them to optimize the search
+        if (list1.length > list2.length) {
+            return findRestaurant(list2, list1);
+        }
+
+        // Map to store restaurant names from list1 and their indices
+        Map<String, Integer> map1 = new HashMap<>();
+        for (int i = 0; i < list1.length; i++) {
+            map1.put(list1[i], i);
+        }
+
+        List<String> mins = new ArrayList<>(); // List to store common restaurants with least index sum
+        int minSum = Integer.MAX_VALUE; // Initialize the minimum sum to the highest possible value
+
+        // Iterate over list2 to find common restaurants and calculate index sums
+        for (int i = 0; i < list2.length; i++) {
+            String rest2 = list2[i];
+            if (map1.containsKey(rest2)) {
+                int sum = map1.get(rest2) + i; // Calculate the index sum
+                if (sum < minSum) {
+                    mins = new ArrayList<>(); // New minimum sum found, reset the list
+                    minSum = sum; // Update the minimum sum
+                }
+                if (sum == minSum) {
+                    mins.add(rest2); // Add restaurant to the list if it matches the minimum sum
+                }
+            }
+        }
+
+        // Convert the list to an array and return
+        return mins.toArray(new String[0]);
+    }
+}
+ 
+
+
